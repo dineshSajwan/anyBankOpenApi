@@ -20,13 +20,13 @@ import software.amazon.awscdk.services.iam.PolicyStatement;
 
 public class PipelineStack extends Stack {
 
-	public PipelineStack(final Construct scope, final String id,
-			String repositoryPath, String repositoryBranch, String connectionArn,
-			String codeArtifactRepositoryName, String codeArtifactDomainName) {
+	// public PipelineStack(final Construct scope, final String id,
+	// 		String repositoryPath, String repositoryBranch, String connectionArn,
+	// 		String codeArtifactRepositoryName, String codeArtifactDomainName) {
 
-		this(scope, id, repositoryPath, repositoryBranch, connectionArn,
-				codeArtifactRepositoryName, codeArtifactDomainName, null);
-	}
+	// 	this(scope, id, repositoryPath, repositoryBranch, connectionArn,
+	// 			codeArtifactRepositoryName, codeArtifactDomainName, null);
+	// }
 
 	public PipelineStack(final Construct scope, final String id,
 			String repositoryPath, String repositoryBrach, String connectionArn,
@@ -34,30 +34,30 @@ public class PipelineStack extends Stack {
 
 		super(scope, id, props);
 
+		// create pipeline source
 		CodePipelineSource pipelineSource = CodePipelineSource.connection(repositoryPath, repositoryBrach,
 				ConnectionSourceOptions.builder()
 						.connectionArn(connectionArn)
 						.build());
 
-		// Synth Caching Support
-		// https://github.com/aws/aws-cdk/issues/13043,
-		// https://github.com/aws/aws-cdk/issues/16375
-		// https://aws.amazon.com/blogs/devops/how-to-enable-caching-for-aws-codebuild/
-		// https://docs.aws.amazon.com/codebuild/latest/userguide/build-caching.html
-		// https://aws.amazon.com/blogs/devops/reducing-docker-image-build-time-on-aws-codebuild-using-an-external-cache/
+		
+		// sythesize step, take pipeline source and run cdk synth command
 		ShellStep synthStep = ShellStep.Builder.create("Synth")
 				.input(pipelineSource)
 				.commands(Arrays.asList("npm install -g aws-cdk@2.19.0", "cd cdk", "cdk synth"))
 				.primaryOutputDirectory("cdk/cdk.out")
 				.build();
-
-		final CodePipeline pipeline = CodePipeline.Builder.create(this, "OpenAPIBlogPipeline")
-				.pipelineName("OpenAPIBlogPipeline")
+		
+		// validate the pipeline		
+		final CodePipeline pipeline = CodePipeline.Builder.create(this, "anyBankOpenApiPipeline")
+				.pipelineName("anyBankOpenApiPipeline")
 				.selfMutation(true)
 				.dockerEnabledForSynth(true)
 				.synth(synthStep)
 				.build();
-
+		
+		// publish the assets created from cdk synth.
+		// publish the auto generated code to code artifact 
 		PolicyStatement codeArtifactStatement = PolicyStatement.Builder.create()
 				.sid("CodeArtifact")
 				.effect(Effect.ALLOW)
@@ -87,6 +87,7 @@ public class PipelineStack extends Stack {
 								this)))
 				.build();
 
+		// why sts ?
 		PolicyStatement codeArtifactStsStatement = PolicyStatement.Builder.create()
 				.sid("CodeArtifactStsStatement")
 				.effect(Effect.ALLOW)
@@ -103,6 +104,8 @@ public class PipelineStack extends Stack {
 				})
 				.build();
 
+		
+		// run the auto code generator for open api		
 		CodeBuildStep codeArtifactStep = CodeBuildStep.Builder.create("CodeArtifactDeploy")
 				.input(pipelineSource)
 				.commands(Arrays.asList(

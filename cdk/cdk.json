@@ -25,10 +25,10 @@
       "aws",
       "aws-cn"
     ],
-    "RepositoryString": "lukepopp/aws-blog-openapi-cdkv2",
+    "RepositoryString": "dineshSajwan/anyBankOpenApi",
     "RepositoryBranch": "main",
-    "CodestarConnectionArn": "arn:aws:codestar-connections:ap-southeast-2:067566784356:connection/27053bd0-ce64-4c0b-9381-e31475918dfa",
-    "CodeArtifactDomain": "openapiblog",
-    "CodeArtifactRepository": "openapiblog"
+    "CodestarConnectionArn": "arn:aws:codestar-connections:us-east-1:551246883740:connection/f0b64294-37e7-4457-a6e2-39e02990ab1b",
+    "CodeArtifactDomain": "anybankpoc",
+    "CodeArtifactRepository": "anybankapiclientrepo"
   }
 }

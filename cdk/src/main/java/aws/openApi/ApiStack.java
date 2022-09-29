@@ -112,12 +112,12 @@ public class ApiStack extends Stack {
 				})
 				.outputType(BundlingOutput.ARCHIVED);
 
-		AssetCode apiCode = Code.fromAsset("../app/",
+		AssetCode apiCode = Code.fromAsset("../apiApp/getting-started/",
 				AssetOptions.builder()
 						.bundling(apiBuilderOptions.command(apiPackagingInstructions).build())
 						.build());
 
-		Function apiLambda = new Function(this, "OpenAPIBlogLambda",
+		Function apiLambda = new Function(this, "anyBankMortgageLambda",
 				FunctionProps.builder()
 						.runtime(software.amazon.awscdk.services.lambda.Runtime.JAVA_11)
 						.code(apiCode)
@@ -137,7 +137,7 @@ public class ApiStack extends Stack {
 				.build();
 		apiLambda.addPermission("API GW Permission", lamdaAPIGatewayPermission);
 
-		Asset openAPIAsset = Asset.Builder.create(this, "OpenAPIBlogAsset")
+		Asset openAPIAsset = Asset.Builder.create(this, "anyBankOpenAPIAsset")
 				.path("../api/openapi.yaml").build();
 
 		Map<String, String> transformMap = new HashMap<String, String>();
@@ -148,15 +148,15 @@ public class ApiStack extends Stack {
 
 		InlineApiDefinition apiDefinition = AssetApiDefinition.fromInline(data);
 
-		SpecRestApi restAPI = SpecRestApi.Builder.create(this, "OpenAPIBlogRestAPI")
+		SpecRestApi restAPI = SpecRestApi.Builder.create(this, "anyBankOpenAPIRestAPI")
 				.apiDefinition(apiDefinition)
-				.restApiName("OpenAPIBlogWidgetAPI")
-				.endpointExportName("OpenAPIBlogWidgetRestApiEndpoint")
+				.restApiName("anyBankOpenAPIMortageAPI")
+				.endpointExportName("anyBankOpenAPIMortageRestApiEndpoint")
 				.deployOptions(StageOptions.builder().stageName(stage).build())
 				.deploy(true)
 				.build();
 
-		restIdOutput = CfnOutput.Builder.create(this, "OpenAPIBlogAPIRestIdOutput")
+		restIdOutput = CfnOutput.Builder.create(this, "anyBankOpenAPIMortageRestIdOutput")
 				.value(restAPI.getRestApiId())
 				.build();
 
@@ -200,7 +200,7 @@ public class ApiStack extends Stack {
 				.bundling(apiDocBuilderOptions.command(apiDocPackagingInstructions).build())
 				.build());
 
-		Bucket webBucket = Bucket.Builder.create(this, "OpenAPIBlogAPIBucket")
+		Bucket webBucket = Bucket.Builder.create(this, "anyBankOpenAPIBucket")
 				.bucketName(PhysicalName.GENERATE_IF_NEEDED)
 				.versioned(true)
 				.encryption(BucketEncryption.UNENCRYPTED)
@@ -208,8 +208,8 @@ public class ApiStack extends Stack {
 				.removalPolicy(RemovalPolicy.DESTROY)
 				.build();
 
-		OriginAccessIdentity oai = OriginAccessIdentity.Builder.create(this, "OpenAPIBlogWidgetAPIOAI")
-				.comment("OAI for the OpenAPI Blog Widget API Document Website")
+		OriginAccessIdentity oai = OriginAccessIdentity.Builder.create(this, "anyBankOpenAPIMortageAAPIOAI")
+				.comment("OAI for the anyBank open api Website")
 				.build();
 
 		S3OriginConfig s3OriginConfig = S3OriginConfig.builder()
@@ -230,11 +230,11 @@ public class ApiStack extends Stack {
 						.build());
 
 		CloudFrontWebDistribution cloudFrontWebDistribution = CloudFrontWebDistribution.Builder
-				.create(this, "OpenAPIBlogCFD")
+				.create(this, "anyBankOpenAPIMortageCFD")
 				.originConfigs(cloudFrontConfigs)
 				.build();
 
-		BucketDeployment bucketDeployment = BucketDeployment.Builder.create(this, "OpenAPIBlogS3Deployment")
+		BucketDeployment bucketDeployment = BucketDeployment.Builder.create(this, "anyBankOpenAPIMortageS3Deployment")
 				.sources(Arrays.asList(apiDocSource))
 				.destinationBucket(webBucket)
 				.distribution(cloudFrontWebDistribution)
@@ -246,15 +246,15 @@ public class ApiStack extends Stack {
 						CacheControl.sMaxAge(Duration.seconds(0))))
 				.build();
 
-		bucketNameOutput = CfnOutput.Builder.create(this, "OpenAPIBlogWebBucketName")
+		bucketNameOutput = CfnOutput.Builder.create(this, "anyBankOpenAPIBucketName")
 				.value(webBucket.getBucketName())
 				.build();
 
-		cloudFrontURLOutput = CfnOutput.Builder.create(this, "OpenAPIBlogCloudFrontURL")
+		cloudFrontURLOutput = CfnOutput.Builder.create(this, "anyBankOpenAPICloudFrontURL")
 				.value(cloudFrontWebDistribution.getDistributionDomainName())
 				.build();
 
-		cloudFrontDistributionIdOutput = CfnOutput.Builder.create(this, "OpenAPIBlogCloudFrontDistributionID")
+		cloudFrontDistributionIdOutput = CfnOutput.Builder.create(this, "anyBankOpenAPICloudFrontDistributionID")
 				.value(cloudFrontWebDistribution.getDistributionId())
 				.build();
 
