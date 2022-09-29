@@ -20,13 +20,13 @@ import software.amazon.awscdk.services.iam.PolicyStatement;
 
 public class PipelineStack extends Stack {
 
-	// public PipelineStack(final Construct scope, final String id,
-	// 		String repositoryPath, String repositoryBranch, String connectionArn,
-	// 		String codeArtifactRepositoryName, String codeArtifactDomainName) {
+	 public PipelineStack(final Construct scope, final String id,
+	 		String repositoryPath, String repositoryBranch, String connectionArn,
+	 		String codeArtifactRepositoryName, String codeArtifactDomainName) {
 
-	// 	this(scope, id, repositoryPath, repositoryBranch, connectionArn,
-	// 			codeArtifactRepositoryName, codeArtifactDomainName, null);
-	// }
+	 	this(scope, id, repositoryPath, repositoryBranch, connectionArn,
+	 			codeArtifactRepositoryName, codeArtifactDomainName, null);
+	 }
 
 	public PipelineStack(final Construct scope, final String id,
 			String repositoryPath, String repositoryBrach, String connectionArn,

@@ -22,7 +22,7 @@ public class CdkApp {
 
         // initiate the pipeline stack
         new PipelineStack(app, "anyBankOpenApiPipeline", repositoryString, repositoryBranch, codestarConnectionArn,
-                codeArtifactRepository, codeArtifactDomain,null);
+                codeArtifactRepository, codeArtifactDomain);
 
         //  syntesize , this groups everything in cloudformation.       
         app.synth();
