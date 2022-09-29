@@ -1,0 +1,139 @@
+openapi: 3.0.0
+servers: []
+info:
+  version: "1.0.0"
+  title: anyBank API
+  description: >-
+    This API gives the mortagage eligibility of the customer.
+externalDocs:
+  description: Mortagage API Git repository
+  url: https://gitlab.aws/lppopple/blog/cdk-openapi/Mortgages-api
+tags:
+  - name: Open Banking 
+    description: Everything about Mortgage
+    externalDocs:
+      description: Amazon Web Services
+      url: 'http://aws.amazon.com'
+paths:
+  /accounts:
+    get: 
+      tags:
+        - Mortgage account
+      summary: Mortgage List.
+      description: Get list of Mortgage accounts.
+      operationId: getMortgageAccounts
+      responses:
+        '200':
+          $ref: '#/components/responses/MortgageAccounts'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${APILambda.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+  /creditCapability/{customerId}:    
+    post:
+      tags:
+        - Mortgage
+      summary: Create Mortgage.
+      description: Create a Mortgage.
+      operationId: createMortgage
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      responses:
+        '201':
+          description: Created
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2022-09-28/functions/${APILambda.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+  /mortgages/{accountId}:
+    put:
+      tags:
+        - Mortgage
+      summary: Update Mortgage.
+      description: Update a Mortgage.
+      operationId: updateMortgage
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+      requestBody:
+        $ref: '#/components/requestBodies/Account'
+      responses:
+        '204':
+          description: Updated
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2022-09-28/functions/${APILambda.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+  /ping:
+    get:
+      summary: Server heartbeat operation
+      description: >-
+        Ping the service.
+      operationId: getPing
+      responses:
+        '200':
+          description: OK
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${APILambda.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+
+components:
+  parameters:
+    accountId:
+      in: path
+      name: accountId
+      required: true
+      schema:
+        type: number
+    customerId:
+      in: path
+      name: customerId
+      required: true
+      schema:
+        type: number        
+  requestBodies:
+    Account:
+      description: Represents a Widget creation.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Account'
+  responses:
+    MortgageAccounts:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Account'
+    Account:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Account'
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - id
+        - name
+        - description
+          
