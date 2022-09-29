@@ -111,8 +111,8 @@ public class PipelineStack extends Stack {
 				.commands(Arrays.asList(
 						"echo $REPOSITORY_DOMAIN",
 						"echo $REPOSITORY_NAME",
-						"export CODEARTIFACT_TOKEN=`aws codeartifact get-authorization-token --domain $REPOSITORY_DOMAIN --query authorizationToken --output text`",
-						"export REPOSITORY_ENDPOINT=$(aws codeartifact get-repository-endpoint --domain $REPOSITORY_DOMAIN --repository $REPOSITORY_NAME --format maven | jq .repositoryEndpoint | sed 's/\\\"//g')",
+						"export CODEARTIFACT_TOKEN=`aws --region us-east-1 codeartifact get-authorization-token --domain $REPOSITORY_DOMAIN --query authorizationToken --output text`",
+						"export REPOSITORY_ENDPOINT=$(aws --region us-east-1 codeartifact get-repository-endpoint --domain $REPOSITORY_DOMAIN --repository $REPOSITORY_NAME --format maven | jq .repositoryEndpoint | sed 's/\\\"//g')",
 						"echo $REPOSITORY_ENDPOINT",
 						"cd api",
 						"wget -q https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.4.0/openapi-generator-cli-5.4.0.jar -O openapi-generator-cli.jar",
