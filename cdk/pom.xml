@@ -3,7 +3,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>aws.sample.blog.cdk-open-api</groupId>
+    <groupId>aws.openapi</groupId>
     <artifactId>cdk</artifactId>
     <version>0.1</version>
 
@@ -31,7 +31,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <mainClass>aws.sample.blog.cdkopenapi.cdk.CdkApp</mainClass>
+                    <mainClass>aws.openApi.CdkApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
