@@ -200,6 +200,8 @@ public class ApiStack extends Stack {
 				.bundling(apiDocBuilderOptions.command(apiDocPackagingInstructions).build())
 				.build());
 
+				
+
 		Bucket webBucket = Bucket.Builder.create(this, "anyBankOpenAPIBucket")
 				.bucketName(PhysicalName.GENERATE_IF_NEEDED)
 				.versioned(true)
@@ -207,6 +209,8 @@ public class ApiStack extends Stack {
 				.autoDeleteObjects(true)
 				.removalPolicy(RemovalPolicy.DESTROY)
 				.build();
+
+			
 
 		OriginAccessIdentity oai = OriginAccessIdentity.Builder.create(this, "anyBankOpenAPIMortageAAPIOAI")
 				.comment("OAI for the anyBank open api Website")

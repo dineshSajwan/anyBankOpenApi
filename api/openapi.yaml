@@ -5,7 +5,7 @@ info:
   title: anyBank API
   description: >-
     Welcome to the anyBank API! You can use our API to access open banking endpoints, which can get information on various mortage, transaction in our database.
-    Please click here for the registration. <a href='s3://dev-anybankopenapi-anybankopenapibucket6910d8a7-pzacc8hxq0u4/registration.html'>Documentation Powered by Slate</a>
+    Please click here for the registration. <a href='s3://dev-anybankopenapi-anybankopenapibucket6910d8a7-pzacc8hxq0u4/registration.html'>Sign up for the API key</a>
 externalDocs:
   description: Mortagage API Git repository
   url: --
@@ -23,6 +23,8 @@ paths:
       summary: Mortgage List.
       description: Get list of Mortgage accounts.
       operationId: getMortgageAccounts
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           $ref: '#/components/responses/MortgageAccounts'
@@ -39,6 +41,8 @@ paths:
       summary: Create Mortgage.
       description: Create a Mortgage.
       operationId: createMortgage
+      security:
+        - ApiKeyAuth: []
       parameters:
         - $ref: '#/components/parameters/customerId'
       responses:
@@ -57,6 +61,8 @@ paths:
       summary: Update Mortgage.
       description: Update a Mortgage.
       operationId: updateMortgage
+      security:
+        - ApiKeyAuth: []
       parameters:
         - $ref: '#/components/parameters/accountId'
       requestBody:
@@ -87,6 +93,11 @@ paths:
         type: "aws_proxy"
 
 components:
+  securitySchemes:
+    ApiKeyAuth:        
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: X-API-KEY  # name of the header, query parameter or cookie
   parameters:
     accountId:
       in: path
@@ -137,4 +148,3 @@ components:
         - id
         - name
         - description
-          
