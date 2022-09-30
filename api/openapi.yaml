@@ -4,10 +4,11 @@ info:
   version: "1.0.0"
   title: anyBank API
   description: >-
-    This API gives the mortagage eligibility of the customer.
+    Welcome to the anyBank API! You can use our API to access open banking endpoints, which can get information on various mortage, transaction in our database.
+    Please click here for the registration. <a href='s3://dev-anybankopenapi-anybankopenapibucket6910d8a7-pzacc8hxq0u4/registration.html'>Documentation Powered by Slate</a>
 externalDocs:
   description: Mortagage API Git repository
-  url: https://gitlab.aws/lppopple/blog/cdk-openapi/Mortgages-api
+  url: --
 tags:
   - name: Open Banking 
     description: Everything about Mortgage
